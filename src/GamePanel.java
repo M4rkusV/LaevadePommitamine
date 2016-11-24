@@ -174,37 +174,35 @@ public class  GamePanel extends JPanel {
     private void setScore() {
         score.setText("Score: " + player1score + " - " + player2score);
     }
-        private boolean shipSunk(int locationx, int locationy) {
-            LinkedList<Integer[]> shipCoordinates = new LinkedList<>();
-            boolean breakout = false;
-            boolean breakout2 = false;
-            int[] direction = {-1, -1};
-            BattleWindow.currentPlayer.planningfield[locationx][locationy] = SeaConstants.SEA;
-            for (int x = locationx - 1; x < locationx + 2; x++) {
-                for (int y = locationy - 1; y < locationy + 2; y++) {
-                    if (x >= 0 && x < BattleWindow.battleFieldSize && y >= 0 && y < BattleWindow.battleFieldSize ) {
-                        if (BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.SHIP || BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.HIT_SHIP) {
-                            direction = new int[]{x - locationx, y - locationy};
-                            //
-                        }
-
+    private boolean shipSunk(int locationx, int locationy) {
+        LinkedList<Integer[]> shipCoordinates = new LinkedList<>();
+        boolean breakout = false;
+        boolean breakout2 = false;
+        int[] direction = {-1, -1};
+        BattleWindow.currentPlayer.planningfield[locationx][locationy] = SeaConstants.SEA;
+        for (int x = locationx - 1; x < locationx + 2; x++) {
+            for (int y = locationy - 1; y < locationy + 2; y++) {
+                if (x >= 0 && x < BattleWindow.battleFieldSize && y >= 0 && y < BattleWindow.battleFieldSize ) {
+                    if (BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.SHIP || BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.HIT_SHIP) {
+                        direction = new int[]{x - locationx, y - locationy};
+                        //
                     }
+
                 }
             }
-            BattleWindow.currentPlayer.planningfield[locationx][locationy] = SeaConstants.HIT_SHIP;
-            for(int d = 0;d < 5;d++) {
-                int mx = (d*direction[0])+ locationx;
-                int my = (d*direction[1])+ locationy;
-                for (int x = mx; x < mx + 1 ; x++) {
-                    for (int y = my; y < my + 1; y++) {
-                        if (x >= 0 && x < BattleWindow.battleFieldSize && y >= 0 && y < BattleWindow.battleFieldSize) {
-                            if (BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.SHIP || BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.HIT_SHIP) {
-                                shipCoordinates.add(new Integer[]{x, y});
-                            }
-                            else {
-                                breakout = true;
-                            }
-                            if (breakout) break;
+        }
+        BattleWindow.currentPlayer.planningfield[locationx][locationy] = SeaConstants.HIT_SHIP;
+        for(int d = 0;d < 5;d++) {
+            int mx = (d*direction[0])+ locationx;
+            int my = (d*direction[1])+ locationy;
+            for (int x = mx; x < mx + 1 ; x++) {
+                for (int y = my; y < my + 1; y++) {
+                    if (x >= 0 && x < BattleWindow.battleFieldSize && y >= 0 && y < BattleWindow.battleFieldSize) {
+                        if (BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.SHIP || BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.HIT_SHIP) {
+                            shipCoordinates.add(new Integer[]{x, y});
+                        }
+                        else {
+                            breakout = true;
                         }
                         if (breakout) break;
                     }
@@ -212,19 +210,19 @@ public class  GamePanel extends JPanel {
                 }
                 if (breakout) break;
             }
-            for(int d = 0;d < 5;d++) {
-                int mx = -(d*direction[0])+ locationx;
-                int my = -(d*direction[1])+ locationy;
-                for (int x = mx; x < mx + 1 ; x++) {
-                    for (int y = my; y < my + 1; y++) {
-                        if (x >= 0 && x < BattleWindow.battleFieldSize && y >= 0 && y < BattleWindow.battleFieldSize) {
-                            if (BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.SHIP || BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.HIT_SHIP) {
-                                shipCoordinates.add(new Integer[]{x, y});
-                            }
-                            else {
-                                breakout2 = true;
-                            }
-                            if (breakout2) break;
+            if (breakout) break;
+        }
+        for(int d = 0;d < 5;d++) {
+            int mx = -(d*direction[0])+ locationx;
+            int my = -(d*direction[1])+ locationy;
+            for (int x = mx; x < mx + 1 ; x++) {
+                for (int y = my; y < my + 1; y++) {
+                    if (x >= 0 && x < BattleWindow.battleFieldSize && y >= 0 && y < BattleWindow.battleFieldSize) {
+                        if (BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.SHIP || BattleWindow.currentPlayer.planningfield[x][y] == SeaConstants.HIT_SHIP) {
+                            shipCoordinates.add(new Integer[]{x, y});
+                        }
+                        else {
+                            breakout2 = true;
                         }
                         if (breakout2) break;
                     }
@@ -232,14 +230,16 @@ public class  GamePanel extends JPanel {
                 }
                 if (breakout2) break;
             }
-            for (Integer[] m : shipCoordinates) {
-                if (BattleWindow.currentPlayer.planningfield[m[0]][m[1]] != SeaConstants.HIT_SHIP) {
-                    return false;
-                }
-            }
-
-            return true;
+            if (breakout2) break;
         }
+        for (Integer[] m : shipCoordinates) {
+            if (BattleWindow.currentPlayer.planningfield[m[0]][m[1]] != SeaConstants.HIT_SHIP) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 
